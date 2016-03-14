@@ -1,0 +1,45 @@
+function keepgoing(progress){
+        switch((progress.match(/ /g) || []).length) {
+            case 0:
+                return keepgoing(progress + 'I ');
+            case 1:
+                if (progress.slice(-1) == 'e'){
+                    return keepgoing(progress + 'a');
+                }
+                if (progress.slice(-1) == 'b'){
+                    return keepgoing(progress + 'e');
+                }
+                if (progress.length < 3){
+                    return keepgoing(progress + 'b');
+                }
+            case 2:
+                if (progress.slice(-1) == 'c'){
+                    if ((progress.match(/c/g) || []).length < 2){
+                        return keepgoing(progress + 'a');
+                    }
+                    if ((progress.match(/c/g) || []).length > 1){
+                        return keepgoing(progress + 'e');
+                    }
+                }
+                if (progress.slice(-1) == ' '){
+                    return keepgoing(progress + 'c');
+                }
+                if ((progress.match(/c/g) || []).length < 2){
+                    if (progress.slice(-1) == 'n'){
+                        return keepgoing(progress + 'c');
+                    }
+                }
+                if (progress.slice(-1) == 'e'){
+                    if ((progress.match(/r/g) || []).length < 1){
+                        return keepgoing(progress + 'r');
+                    }
+                }
+        }
+        if (progress.length == 9){
+            return keepgoing(progress + 'n');
+        }
+        if ((progress.match(/ /g) || []).length == 1){
+            return keepgoing(progress + 't ');
+        }
+        return progress;
+    }
