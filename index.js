@@ -2,7 +2,7 @@
 
 var express = require('express');
 var kraken = require('kraken-js');
-var schemaLib = require('./libs/schemaValidation');
+// var schemaLib = require('./libs/schemaValidation');
 
 var options, app;
 
@@ -20,7 +20,7 @@ options = {
     }
 };
 
-schemaLib.config();
+// schemaLib.config();
 
 
 app = module.exports = express();

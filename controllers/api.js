@@ -1,11 +1,35 @@
 'use strict';
 
-var ApiModel = require('../models/api');
-var schemaLib = require('../libs/schemaValidation');
+var LogModel = require('../models/log');
+var fs = require('fs');
+
+function(){
+    var schema = {},
+        categoryActions = {};
+
+    fs.readFile('./docs/json_schema.json', function(err, data) {
+        if (err) {
+            throw err;
+        }
+
+        schema = JSON.parse(data);
+    });
+
+    fs.readFile('./docs/categoryActions.json', function(err, data) {
+        if (err) {
+            throw err;
+        }
+
+        categoryActions = JSON.parse(data);
+    });
+
+    LogModel.config(schema, categoryActions);
+}
+
 
 module.exports = function (router) {
 
-    var model = new ApiModel();
+    // var model = new LogModel();
 
     router.get('/', function (req, res) {
 
@@ -14,16 +38,8 @@ module.exports = function (router) {
     });
 
     router.post('/log', function (req, res) {
-        var result = schemaLib.validate(req.body);
-        console.log(result);
-        if (result == true){
-            res.send('<code><pre>' + JSON.stringify({result:'success'}, null, 2) + '</pre></code>');
-        }
-        else{
-            res.send('<code><pre>' + JSON.stringify({result:result}, null, 2) + '</pre></code>');
-        }
-
-
+        var result = LogModel.validate(req.body);
+        res.send('<code><pre>' + JSON.stringify(result, null, 2) + '</pre></code>');
     });
 
 };

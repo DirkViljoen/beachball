@@ -55,7 +55,8 @@
         "reject",
         "fill",
         "close",
-        "cancel"
+        "cancel",
+        "post"
       ]
     },
     "level": {
@@ -64,14 +65,8 @@
       "title": "Level schema.",
       "description": "Indicates privalage level of information.",
       "name": "level",
-      "default": 3,
-      "enum": [
-        1,
-        2,
-        3,
-        4,
-        5
-      ]
+      "minimum": 1,
+      "maximum": 5
     },
     "timestamp": {
       "id": "http://jsonschema.net/timestamp",
@@ -88,11 +83,11 @@
       "description": "Action source.",
       "name": "source",
       "enum": [
-        "people bank",
-        "rms",
-        "jp",
-        "people fluent",
-        "elms"
+        "People Bank",
+        "RMS",
+        "JP",
+        "People Fluent",
+        "ELMS"
       ]
     },
     "data": {
@@ -111,7 +106,7 @@
           "properties": {
             "id": {
               "id": "http://jsonschema.net/data/user/id",
-              "type": "integer",
+              "type": "string",
               "title": "Id schema.",
               "description": "id of the user making changes to the data.",
               "name": "id"
@@ -138,7 +133,7 @@
           "properties": {
             "id": {
               "id": "http://jsonschema.net/data/client/id",
-              "type": "integer",
+              "type": "string",
               "title": "Id schema.",
               "description": "client id.",
               "name": "id"
@@ -155,17 +150,42 @@
             "id",
             "name"
           ]
+        },
+        "job": {
+          "id": "http://jsonschema.net/data/job",
+          "type": "object",
+          "title": "Job schema.",
+          "description": "Additional job data that need to be captured.",
+          "name": "job",
+          "properties": {
+            "id": {
+              "id": "http://jsonschema.net/data/job/id",
+              "type": "string",
+              "title": "Id schema.",
+              "description": "job id.",
+              "name": "id"
+            },
+            "name": {
+              "id": "http://jsonschema.net/data/job/name",
+              "type": "string",
+              "title": "Name schema.",
+              "description": "Job name.",
+              "name": "name"
+            }
+          },
+          "required": [
+            "id",
+            "name"
+          ]
         }
       }
     }
   },
   "required": [
-    // "_id",
     "category",
     "action",
     "level",
     "id",
-    "timestamp",
     "source"
   ]
 }
