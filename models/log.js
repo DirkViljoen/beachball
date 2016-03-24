@@ -1,8 +1,8 @@
 // requires
-var Ajv     = require('ajv'),
-    q       = require('q');
+var Ajv = require('ajv'),
+    q = require('q');
 
-// global vars
+// global variables
 var ajv = Ajv(); // options can be passed, e.g. {allErrors: true}
 var vldte;
 var validCatActions = {};
@@ -32,38 +32,34 @@ var log = function() {
             deferred.resolve(true);
         }
         else{
-            switch(vldte.errors[0].keyword) {
-                case 'required':
-                    err = new Error('Invalid structure')
-                    err.data = 'Invalid ' + vldte.errors[0].dataPath.slice(1) + ' - ' + vldte.errors[0].message;
-                    break;
-                default:
-                    err = new Error('Invalid data')
-                    err.data = 'Invalid ' + vldte.errors[0].dataPath.slice(1) + ' - ' + vldte.errors[0].message;
-            };
+            var datapath = 'object';
+            if (vldte.errors[0].dataPath.length > 0){
+                datapath = vldte.errors[0].dataPath.slice(1);
+            }
 
+            err = new Error('Invalid ' + datapath + ' - ' + vldte.errors[0].message);
             deferred.reject(err);
         }
 
         return deferred.promise;
     };
 
+    /*
+    Determines if the provided category and action is mapped in the provided json file during config. Returnes a promise which is resolved with true, or rejected with an error.
+    */
     function validateCategoryAction(obj) {
         var deferred = q.defer();
 
         try {
-            if (validCatActions[obj.category].indexOf(obj.action) < 1) {
-                err = new Error('Invalid data');
-                err.data = 'Invalid category action - The action is not available for the provided category';
-                deferred.reject(err);
+            if (validCatActions[obj.category].indexOf(obj.action) > 0) {
+                deferred.resolve(true);
             }
             else {
-                deferred.resolve(true);
+                throw new error('Invalid');
             }
         }
         catch(err){
-            err = new Error('Invalid data');
-            err.data = 'Invalid category - category does not exist';
+            err = new Error('Invalid category action - The action is not available for the provided category');
             deferred.reject(err);
         }
 

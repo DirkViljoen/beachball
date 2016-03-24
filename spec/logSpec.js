@@ -47,11 +47,17 @@ describe("Log schema validation -", function () {
 
 });
 
-describe("Log schema validation -", function () {
+describe("Log data validation -", function () {
     var res, err;
 
     beforeEach(function (done) {
-        testObj = {};
+        testObj = {
+            // "category": "candidate",
+            "action": "post",
+            "level": 1,
+            "id": "901234",
+            "source": "People Bank"
+        };
 
         log.validate(testObj)
             .then(function (result) {
@@ -63,9 +69,10 @@ describe("Log schema validation -", function () {
             });
     });
 
-    it("Should reject an invalid json object", function () {
+    it("Should reject if category is not present", function () {
         expect(res).not.toBeDefined();
-        expect(err.message).toEqual('Invalid structure');
+        expect(err).toBeDefined();
+        expect(err.message).toEqual("Invalid object - should have required property 'category'");
     });
 
 });
@@ -89,7 +96,38 @@ describe("Log data validation -", function () {
 
     it("Should reject invalid categories", function () {
         expect(res).not.toBeDefined();
-        expect(err.message).toEqual('Invalid data');
+        expect(err).toBeDefined();
+        expect(err.message).toEqual("Invalid category - should be equal to one of the allowed values");
+    });
+
+});
+
+describe("Log data validation -", function () {
+    var res, err;
+
+    beforeEach(function (done) {
+        testObj = {
+            "category": "candidate",
+            // "action": "post",
+            "level": 1,
+            "id": "901234",
+            "source": "People Bank"
+        };
+
+        log.validate(testObj)
+            .then(function (result) {
+                res = result;
+                done();
+            }, function (error) {
+                err = error;
+                done();
+            });
+    });
+
+    it("Should reject if action is not present", function () {
+        expect(res).not.toBeDefined();
+        expect(err).toBeDefined();
+        expect(err.message).toEqual("Invalid object - should have required property 'action'");
     });
 
 });
@@ -113,7 +151,38 @@ describe("Log data validation -", function () {
 
     it("Should reject invalid actions", function () {
         expect(res).not.toBeDefined();
-        expect(err.message).toEqual('Invalid data');
+        expect(err).toBeDefined();
+        expect(err.message).toEqual("Invalid action - should be equal to one of the allowed values");
+    });
+
+});
+
+describe("Log data validation -", function () {
+    var res, err;
+
+    beforeEach(function (done) {
+        testObj = {
+            "category": "job",
+            "action": "post",
+            // "level": 1,
+            "id": "901234",
+            "source": "People Bank"
+        };
+
+        log.validate(testObj)
+            .then(function (result) {
+                res = result;
+                done();
+            }, function (error) {
+                err = error;
+                done();
+            });
+    });
+
+    it("Should reject if level is not present", function () {
+        expect(res).not.toBeDefined();
+        expect(err).toBeDefined();
+        expect(err.message).toEqual("Invalid object - should have required property 'level'");
     });
 
 });
@@ -137,7 +206,93 @@ describe("Log data validation -", function () {
 
     it("Should reject invalid levels", function () {
         expect(res).not.toBeDefined();
-        expect(err.message).toEqual('Invalid data');
+        expect(err).toBeDefined();
+        expect(err.message).toEqual("Invalid level - should be >= 1");
+    });
+
+});
+
+describe("Log data validation -", function () {
+    var res, err;
+
+    beforeEach(function (done) {
+        testObj = JSON.parse(JSON.stringify(testObject));
+        testObj.level = 6;
+
+        log.validate(testObj)
+            .then(function (result) {
+                res = result;
+                done();
+            }, function (error) {
+                err = error;
+                done();
+            });
+    });
+
+    it("Should reject invalid levels", function () {
+        expect(res).not.toBeDefined();
+        expect(err).toBeDefined();
+        expect(err.message).toEqual("Invalid level - should be <= 5");
+    });
+
+});
+
+describe("Log data validation -", function () {
+    var res, err;
+
+    beforeEach(function (done) {
+        testObj = {
+            "category": "job",
+            "action": "post",
+            "level": 1,
+            // "id": "901234",
+            "source": "People Bank"
+        };
+
+        log.validate(testObj)
+            .then(function (result) {
+                res = result;
+                done();
+            }, function (error) {
+                err = error;
+                done();
+            });
+    });
+
+    it("Should reject if id is not present", function () {
+        expect(res).not.toBeDefined();
+        expect(err).toBeDefined();
+        expect(err.message).toEqual("Invalid object - should have required property 'id'");
+    });
+
+});
+
+describe("Log data validation -", function () {
+    var res, err;
+
+    beforeEach(function (done) {
+        testObj = {
+            "category": "job",
+            "action": "post",
+            "level": 1,
+            "id": "901234",
+            // "source": "People Bank"
+        };
+
+        log.validate(testObj)
+            .then(function (result) {
+                res = result;
+                done();
+            }, function (error) {
+                err = error;
+                done();
+            });
+    });
+
+    it("Should reject if source is not present", function () {
+        expect(res).not.toBeDefined();
+        expect(err).toBeDefined();
+        expect(err.message).toEqual("Invalid object - should have required property 'source'");
     });
 
 });
@@ -161,7 +316,8 @@ describe("Log data validation -", function () {
 
     it("Should reject invalid sources", function () {
         expect(res).not.toBeDefined();
-        expect(err.message).toEqual('Invalid data');
+        expect(err).toBeDefined();
+        expect(err.message).toEqual("Invalid source - should be equal to one of the allowed values");
     });
 
 });
@@ -187,7 +343,35 @@ describe("Log data validation -", function () {
 
     it("Should reject invalid user data", function () {
         expect(res).not.toBeDefined();
-        expect(err.message).toEqual('Invalid structure');
+        expect(err).toBeDefined();
+        expect(err.message).toEqual("Invalid data.user - should have required property 'name'");
+    });
+
+});
+
+describe("Log data validation -", function () {
+    var res, err;
+
+    beforeEach(function (done) {
+        testObj = JSON.parse(JSON.stringify(testObject));
+        testObj.data =  {"user": {
+                            "name": "12"
+                        }};
+
+        log.validate(testObj)
+            .then(function (result) {
+                res = result;
+                done();
+            }, function (error) {
+                err = error;
+                done();
+            });
+    });
+
+    it("Should reject invalid user data", function () {
+        expect(res).not.toBeDefined();
+        expect(err).toBeDefined();
+        expect(err.message).toEqual("Invalid data.user - should have required property 'id'");
     });
 
 });
@@ -213,7 +397,35 @@ describe("Log data validation -", function () {
 
     it("Should reject invalid job data", function () {
         expect(res).not.toBeDefined();
-        expect(err.message).toEqual('Invalid structure');
+        expect(err).toBeDefined();
+        expect(err.message).toEqual("Invalid data.job - should have required property 'name'");
+    });
+
+});
+
+describe("Log data validation -", function () {
+    var res, err;
+
+    beforeEach(function (done) {
+        testObj = JSON.parse(JSON.stringify(testObject));
+        testObj.data =  {"job": {
+                            "name": "12"
+                        }};
+
+        log.validate(testObj)
+            .then(function (result) {
+                res = result;
+                done();
+            }, function (error) {
+                err = error;
+                done();
+            });
+    });
+
+    it("Should reject invalid job data", function () {
+        expect(res).not.toBeDefined();
+        expect(err).toBeDefined();
+        expect(err.message).toEqual("Invalid data.job - should have required property 'id'");
     });
 
 });
@@ -239,7 +451,35 @@ describe("Log data validation -", function () {
 
     it("Should reject invalid client data", function () {
         expect(res).not.toBeDefined();
-        expect(err.message).toEqual('Invalid structure');
+        expect(err).toBeDefined();
+        expect(err.message).toEqual("Invalid data.client - should have required property 'name'");
+    });
+
+});
+
+describe("Log data validation -", function () {
+    var res, err;
+
+    beforeEach(function (done) {
+        testObj = JSON.parse(JSON.stringify(testObject));
+        testObj.data =  {"client": {
+                            "name": "hello"
+                        }};
+
+        log.validate(testObj)
+            .then(function (result) {
+                res = result;
+                done();
+            }, function (error) {
+                err = error;
+                done();
+            });
+    });
+
+    it("Should reject invalid client data", function () {
+        expect(res).not.toBeDefined();
+        expect(err).toBeDefined();
+        expect(err.message).toEqual("Invalid data.client - should have required property 'id'");
     });
 
 });
@@ -264,7 +504,8 @@ describe("log data validation -", function() {
 
     it("should only accept mapped category actions", function() {
         expect(res).not.toBeDefined();
-        expect(err.message).toEqual('Invalid data');
+        expect(err).toBeDefined();
+        expect(err.message).toEqual("Invalid category action - The action is not available for the provided category");
     });
 
 });
