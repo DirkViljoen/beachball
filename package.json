@@ -17,6 +17,8 @@
     "eslint": "^1.10.3",
     "express": "^4.12.2",
     "kraken-js": "^1.0.3",
+    "mongodb": "^2.1.11",
+    "mongoose": "^4.4.9",
     "q": "^1.4.1"
   },
   "devDependencies": {

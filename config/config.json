@@ -1,12 +1,9 @@
 {
 
-    "jsonSchemaConfig": {
+    "databaseConfig": {
         "host": "localhost",
-        "database": "sto"
+        "database": "usagelog"
     },
-
-
-
 
     "i18n": {
         "contentPath": "path:./locales",

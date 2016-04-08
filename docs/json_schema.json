@@ -184,7 +184,6 @@
   "required": [
     "category",
     "action",
-    "level",
     "id",
     "source"
   ]

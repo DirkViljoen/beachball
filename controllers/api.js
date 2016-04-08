@@ -1,45 +1,42 @@
 'use strict';
 
-var LogModel = require('../models/log');
-var fs = require('fs');
+var logModel = require('../models/log');
+var q = require('q');
 
-function(){
-    var schema = {},
-        categoryActions = {};
-
-    fs.readFile('./docs/json_schema.json', function(err, data) {
-        if (err) {
-            throw err;
-        }
-
-        schema = JSON.parse(data);
-    });
-
-    fs.readFile('./docs/categoryActions.json', function(err, data) {
-        if (err) {
-            throw err;
-        }
-
-        categoryActions = JSON.parse(data);
-    });
-
-    LogModel.config(schema, categoryActions);
-}
-
+// LogModel.config(schema, categoryActions);
 
 module.exports = function (router) {
 
-    // var model = new LogModel();
-
     router.get('/', function (req, res) {
 
-        res.send('<code><pre>' + JSON.stringify("Hello", null, 2) + '</pre></code>');
+        res.send('<code><pre>' + JSON.stringify("Please refer to documentation for valid api calls.", null, 2) + '</pre></code>');
 
     });
 
     router.post('/log', function (req, res) {
-        var result = LogModel.validate(req.body);
-        res.send('<code><pre>' + JSON.stringify(result, null, 2) + '</pre></code>');
+        var log;
+        var result;
+
+        logModel(req.body)
+            .then(
+                function(value){
+                    log = value;
+
+                    log.create()
+                        .then(
+                            function(value){
+                                res.send('<code><pre>' + JSON.stringify('Success', null, 2) + '</pre></code>');
+                            },
+                            function(err){
+                                res.send('<code><pre>' + JSON.stringify(err.message, null, 2) + '</pre></code>');
+                            }
+                        )
+                },
+                function(err){
+                    res.send('<code><pre>' + JSON.stringify(err.message, null, 2) + '</pre></code>');
+                }
+            );
+
     });
 
 };

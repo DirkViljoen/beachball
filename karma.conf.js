@@ -14,9 +14,10 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-        // 'libs/*.js',
         'models/*.js',
         'spec/*Spec.js',
+        'spec/mocks/*.js',
+        'libs/*.js',
         {pattern:'docs/json_schema.json', included:false},
         {pattern:'docs/categoryActions.json', included:false}
     ],
@@ -24,16 +25,20 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-        'spec/calculatorSpec.js'
+        'spec/logSpec.js'
     ],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-        // 'libs/*.js': ['common_js'],
         'models/*.js': ['common_js'],
-        'spec/*.js': ['common_js']
-        // '**/*.json': ['fixture']
+        'spec/*.js': ['common_js'],
+        'spec/mocks/*.js': ['common_js'],
+        'libs/*.js': ['common_js']
+    },
+
+    commonjsPreprocessor: {
+        modulesRoot: 'some_folder'
     },
 
     // common_js setup
@@ -42,15 +47,13 @@ module.exports = function(config) {
             // 'html-browserify': true
         },
         autoRequire: [
-            // '**/libs/*.js',
             '**/models/*.js',
-            '**/spec/*.js'
+            '**/spec/*.js',
+            '**/spec/mocks/*.js',
+            '**/libs/*.js'
         ]
     },
 
-    /*jsonFixturesPreprocessor: {
-      variableName: '__json__'
-    },*/
 
     // test results reporter to use
     // possible values: 'dots', 'progress'

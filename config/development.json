@@ -1,7 +1,26 @@
 {
-    
+
+    "databaseConfig": {
+        "host": "localhost",
+        "database": "usagelog"
+    },
 
     "middleware": {
+
+        "appsec": {
+            "priority": 110,
+            "module": {
+                "name": "lusca",
+                "arguments": [
+                    {
+                        "csrf": false,
+                        "xframe": "SAMEORIGIN",
+                        "p3p": false,
+                        "csp": false
+                    }
+                ]
+            }
+        },
 
         "devtools": {
             "enabled": true,
@@ -12,13 +31,13 @@
                     "path:./public",
                     "path:./.build",
                     {
-                        
-                        
+
+
                         "css": {
                             "module": "construx-less",
                             "files": "/css/**/*.css"
                         },
-                        
+
                         "copier": {
                             "module": "construx-copier",
                             "files": "**/*"
